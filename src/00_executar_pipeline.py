@@ -68,7 +68,6 @@ def executar_tudo():
     print("Arquivos gerados e atualizados:")
     print(" - Figuras prontas em:      resultados/figuras/")
     print(" - Tabelas estatísticas em: resultados/tabelas/")
-    print("[INFO] O artigo final é compilado em LaTeX a partir de relatorio.tex -> ARTIGO.pdf")
     print("=" * 75)
 
 if __name__ == "__main__":

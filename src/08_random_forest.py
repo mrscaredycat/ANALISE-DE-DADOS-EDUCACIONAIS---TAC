@@ -98,11 +98,25 @@ def executar_random_forest():
     importancias.to_csv(caminho_tabela, index=False, sep=";", encoding="utf-8")
 
     print("\nCalculando média e mediana de notas de Matemática por subcategoria...")
+    # IMPORTANTE: as estatísticas descritivas são calculadas sobre a MESMA amostra
+    # de modelagem (df_modelo, N = 126.874), e não sobre a base bruta, para que os
+    # totais sejam coerentes com o N reportado no trabalho.
+    df_desc = df_modelo
+    print(f"Estatísticas descritivas calculadas sobre a amostra de modelagem: N = {len(df_desc):,}")
+
+    # Cobertura de rede/localização: participantes sem escola vinculada no ENEM
+    # (em geral, quem já concluiu o Ensino Médio em anos anteriores) não têm essa
+    # informação. Esse número alimenta a nota de rodapé da Tabela 2.
+    com_rede = df_desc["TP_DEPENDENCIA_ADM_ESC"].isin([1, 2, 4]).sum()
+    sem_rede = len(df_desc) - com_rede
+    print(f"Rede/Localização: {com_rede:,} com escola identificada | {sem_rede:,} sem escola vinculada (não contabilizados nessas duas dimensões)")
+
     linhas_subcategorias = []
 
     mapa_rede = {1: "Federal", 2: "Pública Distrital", 4: "Privada"}
-    df["Rotulo_Rede"] = df["TP_DEPENDENCIA_ADM_ESC"].map(mapa_rede)
-    for subcat, g in df.groupby("Rotulo_Rede")["NU_NOTA_MT"]:
+    df_desc = df_desc.copy()
+    df_desc["Rotulo_Rede"] = df_desc["TP_DEPENDENCIA_ADM_ESC"].map(mapa_rede)
+    for subcat, g in df_desc.groupby("Rotulo_Rede")["NU_NOTA_MT"]:
         linhas_subcategorias.append({
             "Dimensao": "Rede de Ensino",
             "Subcategoria": subcat,
@@ -121,8 +135,8 @@ def executar_random_forest():
         16: "Ensino Superior",
         18: "Pós-graduação"
     }
-    df["Rotulo_Escolaridade"] = df["MAX_ESC_PAIS"].map(mapa_rotulos_esc)
-    for subcat, g in df.groupby("Rotulo_Escolaridade")["NU_NOTA_MT"]:
+    df_desc["Rotulo_Escolaridade"] = df_desc["MAX_ESC_PAIS"].map(mapa_rotulos_esc)
+    for subcat, g in df_desc.groupby("Rotulo_Escolaridade")["NU_NOTA_MT"]:
         linhas_subcategorias.append({
             "Dimensao": "Escolaridade Máxima Pais",
             "Subcategoria": subcat,
@@ -132,8 +146,8 @@ def executar_random_forest():
             "Desvio_Padrao": round(g.std(), 2)
         })
 
-    df["Rotulo_PC"] = df["TEM_COMPUTADOR"].map({1: "Possui Computador", 0: "Não Possui"})
-    for subcat, g in df.groupby("Rotulo_PC")["NU_NOTA_MT"]:
+    df_desc["Rotulo_PC"] = df_desc["TEM_COMPUTADOR"].map({1: "Possui Computador", 0: "Não Possui"})
+    for subcat, g in df_desc.groupby("Rotulo_PC")["NU_NOTA_MT"]:
         linhas_subcategorias.append({
             "Dimensao": "Recursos Digitais",
             "Subcategoria": subcat,
@@ -143,8 +157,8 @@ def executar_random_forest():
             "Desvio_Padrao": round(g.std(), 2)
         })
 
-    df["Rotulo_Loc"] = df["TP_LOCALIZACAO_ESC"].map({1: "Urbana", 2: "Rural"})
-    for subcat, g in df.dropna(subset=["Rotulo_Loc"]).groupby("Rotulo_Loc")["NU_NOTA_MT"]:
+    df_desc["Rotulo_Loc"] = df_desc["TP_LOCALIZACAO_ESC"].map({1: "Urbana", 2: "Rural"})
+    for subcat, g in df_desc.dropna(subset=["Rotulo_Loc"]).groupby("Rotulo_Loc")["NU_NOTA_MT"]:
         linhas_subcategorias.append({
             "Dimensao": "Localização da Escola",
             "Subcategoria": subcat,
@@ -154,8 +168,8 @@ def executar_random_forest():
             "Desvio_Padrao": round(g.std(), 2)
         })
 
-    df["Rotulo_Raca"] = df["COR_RACA_PPI"].map({1: "Pretos/Pardos/Indígenas (PPI)", 0: "Brancos/Amarelos"})
-    for subcat, g in df.groupby("Rotulo_Raca")["NU_NOTA_MT"]:
+    df_desc["Rotulo_Raca"] = df_desc["COR_RACA_PPI"].map({1: "Pretos/Pardos/Indígenas (PPI)", 0: "Brancos/Amarelos"})
+    for subcat, g in df_desc.groupby("Rotulo_Raca")["NU_NOTA_MT"]:
         linhas_subcategorias.append({
             "Dimensao": "Cor / Raça",
             "Subcategoria": subcat,

@@ -1,17 +1,17 @@
 Dimensao;Subcategoria;Total_Estudantes;Nota_Media;Nota_Mediana;Desvio_Padrao
-Rede de Ensino;Federal;2207;600.99;600.5;127.23
-Rede de Ensino;Privada;18377;621.11;629.9;119.88
-Rede de Ensino;Pública Distrital;26063;511.63;501.3;101.13
-Escolaridade Máxima Pais;Ensino Médio;42617;521.14;509.5;109.27
-Escolaridade Máxima Pais;Ensino Superior;27731;586.2;588.1;126.3
-Escolaridade Máxima Pais;Fundamental Completo;10588;497.97;484.75;99.06
-Escolaridade Máxima Pais;Fundamental I;8271;475.64;460.4;94.68
-Escolaridade Máxima Pais;Fundamental II;8610;490.27;475.8;99.33
-Escolaridade Máxima Pais;Pós-graduação;39018;623.73;633.9;129.88
-Escolaridade Máxima Pais;Sem estudo;1574;448.79;435.55;83.26
-Recursos Digitais;Não Possui;35349;487.51;474.3;99.45
-Recursos Digitais;Possui Computador;105100;577.98;575.5;129.04
-Localização da Escola;Rural;902;508.52;503.4;94.37
-Localização da Escola;Urbana;45748;559.98;552.5;122.75
-Cor / Raça;Brancos/Amarelos;65539;587.69;587.9;132.28
-Cor / Raça;Pretos/Pardos/Indígenas (PPI);74910;526.79;511.2;117.81
+Rede de Ensino;Federal;2043;606.18;609.2;126.44
+Rede de Ensino;Privada;17264;624.13;633.2;119.53
+Rede de Ensino;Pública Distrital;22700;514.04;504.0;101.8
+Escolaridade Máxima Pais;Ensino Médio;38068;522.75;511.4;109.85
+Escolaridade Máxima Pais;Ensino Superior;26145;588.07;590.7;126.56
+Escolaridade Máxima Pais;Fundamental Completo;9110;499.1;485.85;100.07
+Escolaridade Máxima Pais;Fundamental I;7168;474.84;459.45;95.54
+Escolaridade Máxima Pais;Fundamental II;7372;490.32;475.4;99.38
+Escolaridade Máxima Pais;Pós-graduação;37631;625.99;636.3;129.62
+Escolaridade Máxima Pais;Sem estudo;1380;446.75;433.5;83.21
+Recursos Digitais;Não Possui;30128;488.55;475.25;100.36
+Recursos Digitais;Possui Computador;96746;581.88;580.6;129.49
+Localização da Escola;Rural;744;510.95;506.1;93.86
+Localização da Escola;Urbana;41266;564.71;558.95;123.43
+Cor / Raça;Brancos/Amarelos;60342;592.11;594.0;132.65
+Cor / Raça;Pretos/Pardos/Indígenas (PPI);66532;530.34;515.35;119.08

@@ -40,7 +40,19 @@ def gerar_graficos():
         return
         
     df = pd.read_csv(caminho_base, sep=";", encoding="utf-8")
-    print(f"Carregados {len(df):,} registros para análise exploratória.")
+    print(f"Carregados {len(df):,} registros (base completa).")
+
+    # Recorte da amostra de modelagem: os mesmos 126.874 estudantes usados na
+    # regressão (script 07) e no Random Forest (script 08). Mantém apenas quem tem
+    # nota de Matemática e todas as variáveis dos modelos preenchidas.
+    # (Por enquanto, usado apenas na Figura 1; as demais figuras serão migradas em seguida.)
+    variaveis_modelo = [
+        "NU_NOTA_MT", "ESC_PAI_ANOS", "ESC_MAE_ANOS", "LOG_RENDA",
+        "TEM_COMPUTADOR", "TEM_INTERNET", "ESCOLA_PRIVADA", "ESCOLA_FEDERAL",
+        "ESCOLA_URBANA", "COR_RACA_PPI", "SEXO_FEMININO", "NU_ANO"
+    ]
+    df_modelo = df.dropna(subset=variaveis_modelo).copy()
+    print(f"Amostra de modelagem (recorte aplicado): {len(df_modelo):,} registros.")
 
     print("Gerando Heatmap de correlação...")
     cols_corr = [
@@ -57,8 +69,8 @@ def gerar_graficos():
         "IN_BIBLIOTECA",
         "COR_RACA_PPI"
     ]
-    cols_existentes = [c for c in cols_corr if c in df.columns]
-    corr_matrix = df[cols_existentes].corr()
+    cols_existentes = [c for c in cols_corr if c in df_modelo.columns]
+    corr_matrix = df_modelo[cols_existentes].corr()
     
     rotulos = {
         "NU_NOTA_MT": "Nota Matemática",
@@ -93,7 +105,7 @@ def gerar_graficos():
     salvar_figura(caminho_heatmap)
 
     print("Gerando Gráfico de Barras Agrupadas (Mediana por Rede)...")
-    df_valid = df.dropna(subset=["MAX_ESC_PAIS", "TP_ESCOLA", "NU_NOTA_MT"]).copy()
+    df_valid = df_modelo.dropna(subset=["MAX_ESC_PAIS", "TP_ESCOLA", "NU_NOTA_MT"]).copy()
     df_valid = df_valid[df_valid["TP_ESCOLA"].isin([2, 3])]
     df_valid["Rede"] = df_valid["TP_ESCOLA"].map({2: "Pública", 3: "Privada"})
     
@@ -159,7 +171,7 @@ def gerar_graficos():
         salvar_figura(caminho_barras_loc)
 
     print("Gerando Gráfico de Barras Agrupadas (Mediana por Recursos Digitais)...")
-    df_dig = df.dropna(subset=["MAX_ESC_PAIS", "TEM_COMPUTADOR", "NU_NOTA_MT"]).copy()
+    df_dig = df_modelo.dropna(subset=["MAX_ESC_PAIS", "TEM_COMPUTADOR", "NU_NOTA_MT"]).copy()
     df_dig["Computador"] = df_dig["TEM_COMPUTADOR"].map({1: "Com Computador", 0: "Sem Computador"})
     df_dig["Escolaridade_Rotulo"] = df_dig["MAX_ESC_PAIS"].map(mapa_rotulos_esc)
 
